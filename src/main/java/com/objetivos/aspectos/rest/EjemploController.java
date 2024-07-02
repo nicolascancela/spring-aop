@@ -31,7 +31,7 @@ public class EjemploController {
     @GetMapping("/ejemplo4")
     public String metodoCuatro(){
         ejemploService.metodoQueDevuelveUnInteger(); //Match pointcut combinación.
-        ejemploService.metodoQueDevuelveLong(); //No matchea con ningún pointcut.
+        ejemploService.metodoQueDevuelveLong(); //Match pointcut combinación Service y Long.
         ejemploService.metodoQueDevuelveUnString(); //Match pointcut combinación.
         return "Ejemplo 4";
     }

@@ -2,6 +2,7 @@ package com.objetivos.aspectos.aspectos;
 
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -89,5 +90,22 @@ public class Aspectos {
     @Before("execution(String com.objetivos.aspectos.service.EjemploService.*()) || execution(Integer com.objetivos.aspectos.service.EjemploService.*())")
     public void antesDeCualquierMetodoQueDevuelvaUnStringOUnInteger(){
         System.out.println("Match cualquier metodo de Ejemplo Service que devuelva un String o un Integer");
+    }
+
+    //Combinación de pointcuts
+    @Before("@within(org.springframework.stereotype.Service) && execution(Long com.objetivos.aspectos.service.EjemploService.*())")
+    public void antesDeCualquierMetodoDeUnaClaseQueTengaUnaAnotacionServiceYDevuelvaUnLong(){
+        System.out.println("Match cualquier metodo de una clase que tenga una anotacion Service y devuelva un Long");
+    }
+
+    //Pointcuts con nombre
+    @Pointcut("@within(org.springframework.stereotype.Component)")
+    public void pointCuitConNombre(){
+        //Se deja el método vacío.
+    }
+
+    @Before("pointCuitConNombre()")
+    public void antesDeCualquierMetodoPointCutPersonalizado(){
+        System.out.println("POINTCUT Personalizado --> Cualquier método de una clase anotada por Component");
     }
 }
