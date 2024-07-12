@@ -1,5 +1,9 @@
 package com.objetivos.aspectos.aspectos;
 
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.After;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
@@ -13,6 +17,11 @@ public class Aspectos {
     @Before("execution(public String com.objetivos.aspectos.rest.EjemploController.metodo())")
     public void antesDelMetodoEspecifico(){
         System.out.println("Match método especifico");
+    }
+
+    @After("execution(public String com.objetivos.aspectos.rest.EjemploController.metodo())")
+    public void despuesDelMetodoEspecifico(){
+        System.out.println("Match método especifico después de su ejecución");
     }
 
     @Before("execution(public * com.objetivos.aspectos.rest.EjemploController.metodo())")
@@ -107,5 +116,38 @@ public class Aspectos {
     @Before("pointCuitConNombre()")
     public void antesDeCualquierMetodoPointCutPersonalizado(){
         System.out.println("POINTCUT Personalizado --> Cualquier método de una clase anotada por Component");
+    }
+
+    @Around("execution(public void com.objetivos.aspectos.rest.EjemploController.metodoCinco())")
+    public void antesYdespuesDelMetodoEspecifico(ProceedingJoinPoint joinPoint) throws Throwable {
+        System.out.println("Antes de la ejecución del método");
+        joinPoint.proceed(); //Ejecución del método, sino lo invoco el método no se ejecuta.
+        System.out.println("Después de la ejecución del método");
+    }
+
+    @After("execution(public void com.objetivos.aspectos.rest.EjemploController.metodoSeis(*,*))")
+    public void despuesDelMetodoSeisConDosParametros(JoinPoint joinPoint) throws Throwable {
+        Object[] argumentos = joinPoint.getArgs();
+        for (Object arg : argumentos) {
+            if (arg != null) {
+                System.out.println("Tipo: " + arg.getClass().getSimpleName() + ", Valor: " + arg.toString());
+            } else {
+                System.out.println("Tipo: null, Valor: null");
+            }
+        }
+        System.out.println("Match con método con dos parámetros");
+    }
+
+    @After("execution(public void com.objetivos.aspectos.rest.EjemploController.metodoSeis(..))")
+    public void despuesDelMetodoSeisConNParametros(JoinPoint joinPoint) throws Throwable {
+        Object[] argumentos = joinPoint.getArgs();
+        for (Object arg : argumentos) {
+            if (arg != null) {
+                System.out.println("Tipo: " + arg.getClass().getSimpleName() + ", Valor: " + arg.toString());
+            } else {
+                System.out.println("Tipo: null, Valor: null");
+            }
+        }
+        System.out.println("Match con método con n parámetros");
     }
 }
